@@ -3089,8 +3089,11 @@ class SelectQuery(Query):
             index = value.stop
         else:
             index = value
-        if index is not None and index >= 0:
-            index += 1
+        if index is not None:
+            if index >= 0:
+                index += 1
+            else :
+                index = None
         res.fill_cache(index)
         return res._result_cache[value]
 
