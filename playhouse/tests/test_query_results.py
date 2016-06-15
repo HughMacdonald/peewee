@@ -334,6 +334,11 @@ class TestQueryResultWrapper(ModelTestCase):
 
         with self.assertQueryCount(0):
             for i in range(2):
+                res = uq[-1]
+                self.assertEqual(res.username, 'u10')
+
+        with self.assertQueryCount(0):
+            for i in range(2):
                 res = uq[:3]
                 assertUsernames(res, [1, 2, 3])
 
@@ -347,8 +352,27 @@ class TestQueryResultWrapper(ModelTestCase):
                 res = uq[5:]
                 assertUsernames(res, [6, 7, 8, 9, 10])
 
+        with self.assertQueryCount(0):
+            for i in range(2):
+                res = uq[-3:]
+                assertUsernames(res, [8, 9, 10])
+
+        with self.assertQueryCount(0):
+            for i in range(2):
+                res = uq[-5:-3]
+                assertUsernames(res, [6, 7])
+
+        with self.assertQueryCount(0):
+            for i in range(2):
+                res = uq[:-3]
+                assertUsernames(res, [1, 2, 3, 4, 5, 6, 7])
+
+        with self.assertQueryCount(0):
+            for i in range(2):
+                res = uq[2:-3]
+                assertUsernames(res, [3, 4, 5, 6, 7])
+
         self.assertRaises(IndexError, uq.__getitem__, 10)
-        self.assertRaises(ValueError, uq.__getitem__, -1)
 
         with self.assertQueryCount(0):
             res = uq[10:]
